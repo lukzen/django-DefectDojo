@@ -1,0 +1,43 @@
+apiVersion: "execution.securecodebox.io/v1"
+kind: ScheduledScan
+metadata:
+  name: "old-typo3.demo-targets.svc.org-5min"
+spec:
+  interval: 3m
+  scanSpec:
+    scanType: "typo3scan"
+    parameters:
+        - "-d"
+        - http://old-typo3.default.svc.cluster.local
+        # Only show vulnerable extensions
+        - "--vuln"
+        # Set the number of threads to use for enumerating extensions at 10
+        - "--threads"
+        - "10"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+---
+apiVersion: "execution.securecodebox.io/v1"
+kind: ScheduledScan
+metadata:
+  name: "zap-full-scan-juiceshop"
+  annotations:
+    defectdojo.securecodebox.io/product-type-name: "OWASP"
+    defectdojo.securecodebox.io/product-name: "Juice Shop"
+    defectdojo.securecodebox.io/product-description: |
+      OWASP Juice Shop is probably the most modern and sophisticated insecure web application!
+      It can be used in security trainings, awareness demos, CTFs and as a guinea pig for security tools!
+      Juice Shop encompasses vulnerabilities from the entire OWASP Top Ten along with many other security flaws found in real-world applications!
+    defectdojo.securecodebox.io/product-tags: vulnerable,appsec,owasp-top-ten,vulnapp
+    defectdojo.securecodebox.io/engagement-name: "Juice Shop"
+    defectdojo.securecodebox.io/engagement-version: "v12.6.1"
+    defectdojo.securecodebox.io/engagement-tags: "automated,daily"
+    defectdojo.securecodebox.io/engagement-deduplicate-on-engagement: "true"
+    defectdojo.securecodebox.io/test-title: "Juice Shop - v12.6.1"
+spec:
+  interval: 20m
+  scanSpec:
+    scanType: "zap-full-scan"
+    parameters:
+      - "-t"
+      - "http://juice-shop.default.svc.cluster.local:3000"

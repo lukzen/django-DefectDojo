@@ -1,0 +1,21 @@
+---
+# Global settings
+# create defectdojo specific secret
+createSecret: true
+# create rabbitmq secret in defectdojo chart, outside of rabbitmq chart
+createRabbitMqSecret: true
+# create postgresql secret in defectdojo chart, outside of postgresql chart
+createPostgresqlSecret: true
+
+# Configuration value to select database type
+# Option to use "postgresql" or "mysql" database type, by default "mysql" is chosen
+# Set the "enable" field to true of the database type you select (if you want to use internal database) and false of the one you don't select
+database: postgresql
+host: 104.198.134.153 # provided the LoadBalancer as Service Type
+
+django:
+  serviceType: LoadBalancer
+  ingress:
+    enabled: false
+    activateTLS: false
+
